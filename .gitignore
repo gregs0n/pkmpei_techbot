@@ -2,9 +2,11 @@ __pycache__/
 /.vscode
 /venv
 
+
+*.db
 *.log
 .env
 settings.ini
 !*.example
-
+*.exe
 TODO.txt

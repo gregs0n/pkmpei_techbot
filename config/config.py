@@ -23,7 +23,7 @@ def load_config(path: str | None = None) -> Config:
     BOT_TOKEN = read_config['settings']['token'].strip()  # Токен бота
     RATE_LIMIT = float(read_config['settings']['rate_limit'].strip())  # Антифлуд
     PATH_DATABASE = 'data/database.db'  # Путь к БД
-    PATH_LOGS = 'data/logs.log'  # Путь к Логам
+    PATH_LOGS = 'data/updates.log'  # Путь к Логам
     
     admins = read_config['settings']['admin_id'].strip()
     admins = admins.replace(' ', '')
