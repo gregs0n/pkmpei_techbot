@@ -40,7 +40,7 @@ def ListTickets(iduser: int = 0) -> str:
                 """
     params = ()
     if iduser != 0:
-        query += "WHERE idStatus=1 AND idUser=?"
+        query += "WHERE idUser=?"
         params = (iduser,)
     else:
         query += "WHERE idStatus=1"
