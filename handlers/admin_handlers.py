@@ -9,9 +9,12 @@ from states.states import FSMUserStatus
 from services.user_methods import *
 from services.admin_methods import *
 from exceptions.exceptions import BotException
+from filters.filters import IsAdmin
 
 admin_router: Router = Router()
 admin_router.message.filter(StateFilter(FSMUserStatus.admin))
+## admin_router.message.filter(IsAdmin())
+
 
 @admin_router.message(Command(commands='user'))
 async def process_user(message: Message, state: FSMContext):
