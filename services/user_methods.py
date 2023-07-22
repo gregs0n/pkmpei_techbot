@@ -54,8 +54,8 @@ def ListTickets(iduser: int = 0) -> str:
         if iduser == 0:
             max_len = -1
         else:
-            max_len = min(len(row[2]), 75)
-        ticket_field = row[2][:max_len]
+            max_len = min(len(row[2]), 47)
+        ticket_field = row[2][:max_len] + ("" if max_len == -1 else "...")
         row_string = f"Ticket#{row[0]} by @{row[1]}:\n\t{ticket_field} - {row[3]}"
         result.append(row_string)
     return result
