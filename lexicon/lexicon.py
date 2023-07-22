@@ -41,3 +41,10 @@ LEXICON_RU: dict[str, str] = {
 Тикет #{} успешно закрыт.
 """
 }
+
+LEXICON_COMMANDS_RU: dict[str, str] = {
+    '/start' : 'Начало работы',
+    '/help' : 'Справка по работе бота',
+    '/add_ticket' : 'Добавить новую заявку',
+    '/watch_sent' : 'Посмотреть исходящие заявки',
+}
