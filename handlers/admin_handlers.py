@@ -25,10 +25,10 @@ async def process_user(message: Message, state: FSMContext):
 async def process_help(message: Message):
     await message.answer(text=LEXICON_RU['admin_help'])
 
-@admin_router.message(Command(commands='watch_all'))
+@admin_router.message(Command(commands='list_tickets'))
 async def process_show_all(message: Message):
     sent_tickets = ListTickets()
-    await message.answer(text=LEXICON_RU['/watch_tickets'])
+    await message.answer(text=LEXICON_RU['/list_tickets'])
     for ticket in sent_tickets:
         await message.answer(text=ticket)
 
