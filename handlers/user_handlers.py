@@ -50,7 +50,7 @@ async def process_finish_input(message: Message, state: FSMContext):
     except BotException as exc:
         await message.answer(text=str(exc))
     
-@user_router.message(Command(commands='watch_sent'), StateFilter(default_state))
+@user_router.message(Command(commands='list_tickets'), StateFilter(default_state))
 async def process_show_sent(message: Message):
     sent_tickets = ListTickets(message.from_user.id)
-    await message.answer(text=LEXICON_RU['/watch_tickets'] + '\n\n'.join(sent_tickets))
+    await message.answer(text=LEXICON_RU['/list_tickets'] + '\n\n'.join(sent_tickets))
