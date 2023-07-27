@@ -2,7 +2,7 @@ from sqlite3 import connect
 from config.config import load_config
 from exceptions.exceptions import *
 
-def CloseTicket(idTicket: int) -> str:
+def UpdateTicketStatus(idTicket: int) -> str:
     config = load_config('settings.ini')
     with connect(config.PATH_DATABASE) as conn:
         cursor = conn.cursor()
@@ -13,13 +13,13 @@ def CloseTicket(idTicket: int) -> str:
         ticket_status = cursor.fetchone()
         if ticket_status is None:
             raise TicketNotFoundException(f"Тикет #{idTicket} не найден")
-        elif ticket_status == 2:
+        elif ticket_status[0] == 3:
             raise TicketClosedException(f"Тикет #{idTicket} уже закрыт")
         cursor.execute(
-            "UPDATE tickets SET idStatus=2 WHERE id=?",
-            (idTicket,)
+            "UPDATE tickets SET idStatus=? WHERE id=?",
+            (ticket_status[0]+1, idTicket)
         )
-    return f"Тикет #{idTicket} успешно закрыт"
+    return f"Сатус тикета #{idTicket} успешно изменен"
 
 def RemoveTicket(idTicket: int):
     config = load_config('settings.ini')
