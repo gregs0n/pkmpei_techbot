@@ -6,3 +6,4 @@ class FSMUserStatus(StatesGroup):
 
 class FSMAddTicket(StatesGroup):
     fill_ticket = State()
+    fill_type = State()

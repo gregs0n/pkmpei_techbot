@@ -31,17 +31,17 @@ async def process_show_all(message: Message):
     sent_tickets = ListTickets()
     await message.answer(text=LEXICON_RU['/list_tickets'])
     kb = create_inline_kb(2,
-                          cb_close_ticket="Закрыть",
+                          cb_update_ticket="Изменить статус",
                           cb_remove_ticket="Удалить")
     for ticket in sent_tickets:
         await message.answer(text=ticket,
                              reply_markup=kb)
 
-@admin_router.message(Command(commands='close_ticket'))
+@admin_router.message(Command(commands='update_ticket'))
 async def process_close_ticket(message: Message):
     try:
         idTicket: int = int(message.text.split()[1])
-        await message.answer(CloseTicket(idTicket))
+        await message.answer(UpdateTicketStatus(idTicket))
     except BotException as exc:
         await message.answer(text=str(exc))
 
@@ -61,13 +61,10 @@ async def process_remove_ticket(callback: CallbackQuery):
     except TicketNotFoundException as exc:
         await callback.answer(text=str(exc))
 
-@admin_router.callback_query(Text(text=['cb_close_ticket']))
+@admin_router.callback_query(Text(text=['cb_update_ticket']))
 async def process_close_ticket(callback: CallbackQuery):
     try:
-        print(callback.message.text)
-        print(callback.message.text.split())
-        print(callback.message.text.split()[1])
         idTicket: int = int(callback.message.text.split()[0][7:])
-        await callback.answer(CloseTicket(idTicket))
+        await callback.answer(UpdateTicketStatus(idTicket))
     except BotException as exc:
         await callback.answer(text=str(exc))

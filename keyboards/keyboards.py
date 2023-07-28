@@ -2,7 +2,6 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
-# Функция для формирования инлайн-клавиатуры на лету
 def create_inline_kb(width: int,
                      **kwargs: str) -> InlineKeyboardMarkup:
     kb_builder: InlineKeyboardBuilder = InlineKeyboardBuilder()
@@ -17,3 +16,11 @@ def create_inline_kb(width: int,
     kb_builder.row(*buttons, width=width)
 
     return kb_builder.as_markup()
+
+state_keyboard: dict[str, str] = {
+    'query_type' : 'Написать/изменить запрос',
+    'network_type' : 'Починить интернет',
+    'printer_type' : 'Не работает принтер/сканер',
+    'email_type' : 'Отправить email-рассылку',
+    'other_type' : 'Прочее',
+}
