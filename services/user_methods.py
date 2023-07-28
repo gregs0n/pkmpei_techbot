@@ -36,25 +36,13 @@ def AddTicket(iduser: int,
     return ticket_id
 
 def ListTickets(iduser: int = 0) -> str:
-    query: str = """
-                SELECT
-                    id,
-                    userName,
-                    text,
-                    statusName,
-                    categoryName
-                FROM
-                    tickets
-                    INNER JOIN users USING (idUser)
-                    INNER JOIN c_status USING (idStatus)
-                    INNER JOIN c_category USING (idCategory)
-                """
+    query = GET_TICKET_QUERY
     params = ()
     if iduser != 0:
         query += "WHERE idUser=?"
         params = (iduser,)
-    #else:
-    #    query += "WHERE idStatus<>3"
+    else:
+        query += "WHERE idStatus<>3"
     config = load_config('settings.ini')
     rows: list[tuple] = []
     result: list[str] = []
@@ -62,11 +50,31 @@ def ListTickets(iduser: int = 0) -> str:
         cursor = conn.cursor()
         rows = cursor.execute(query, params).fetchall()
     for row in rows:
-        if iduser == 0:
-            max_len = -1
-        else:
-            max_len = min(len(row[2]), 47)
-        ticket_field = row[2][:max_len] + ("" if max_len == -1 else "...")
-        row_string = f"Ticket#{row[0]} by @{row[1]}:\nТип: {row[4]}\n{ticket_field} - {row[3]}"
+        row_string = GetTicketString(*row)
         result.append(row_string)
     return result
+
+def GetTicketString(idTicket: int,
+                    userName: str,
+                    category: str,
+                    status: str,
+                    text: str) -> str:
+    ticket_lines = [f"Ticket#{idTicket} by @{userName}",
+                    f"Type: {category}",
+                    f"Status: {status}",
+                    text]
+    return '\n'.join(ticket_lines)
+
+GET_TICKET_QUERY = """
+SELECT
+    id,
+    userName,
+    categoryName,
+    statusName,
+    text
+FROM
+    tickets
+    INNER JOIN users USING (idUser)
+    INNER JOIN c_status USING (idStatus)
+    INNER JOIN c_category USING (idCategory)
+"""

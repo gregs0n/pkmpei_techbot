@@ -1,6 +1,7 @@
 from sqlite3 import connect
 from config.config import load_config
 from exceptions.exceptions import *
+from .user_methods import GetTicketString, GET_TICKET_QUERY
 
 def UpdateTicketStatus(idTicket: int) -> str:
     config = load_config('settings.ini')
@@ -19,7 +20,11 @@ def UpdateTicketStatus(idTicket: int) -> str:
             "UPDATE tickets SET idStatus=? WHERE id=?",
             (ticket_status[0]+1, idTicket)
         )
-    return f"Сатус тикета #{idTicket} успешно изменен"
+        cursor.execute(GET_TICKET_QUERY + "WHERE id=?",
+                                (idTicket,)
+                                )
+        ticket = cursor.fetchone()
+    return f"Сатус тикета #{idTicket} успешно изменен", GetTicketString(*ticket)
 
 def RemoveTicket(idTicket: int):
     config = load_config('settings.ini')

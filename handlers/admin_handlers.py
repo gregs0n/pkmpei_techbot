@@ -58,6 +58,7 @@ async def process_remove_ticket(callback: CallbackQuery):
     try:
         idTicket: int = int(callback.message.text.split()[0][7:])
         await callback.answer(RemoveTicket(idTicket))
+        await callback.message.delete()
     except TicketNotFoundException as exc:
         await callback.answer(text=str(exc))
 
@@ -65,6 +66,9 @@ async def process_remove_ticket(callback: CallbackQuery):
 async def process_close_ticket(callback: CallbackQuery):
     try:
         idTicket: int = int(callback.message.text.split()[0][7:])
-        await callback.answer(UpdateTicketStatus(idTicket))
+        response, new_ticket_msg_text = UpdateTicketStatus(idTicket)
+        await callback.answer(response)
+        await callback.message.edit_text(new_ticket_msg_text,
+                                         reply_markup=callback.message.reply_markup)
     except BotException as exc:
         await callback.answer(text=str(exc))

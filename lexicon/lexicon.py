@@ -55,7 +55,7 @@ LEXICON_RU: dict[str, str] = {
 Номер заявки - #{}
 """,
 
-'/list_tickets': 'Список заявок:\n',
+'/list_tickets': 'Список заявок:\n\n',
 
 '/close_ticket':
 """
