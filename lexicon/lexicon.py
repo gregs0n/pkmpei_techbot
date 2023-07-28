@@ -22,7 +22,7 @@ LEXICON_RU: dict[str, str] = {
 Список доступных команд:
 
 /list_tickets - Посмотреть все текущие заявки
-/close_ticket N - Отметить заявку N как выполненную
+/update_ticket N - Изменить статус заявки N
 /remove_ticket N - Удалить заявку с номером N
 """,
 

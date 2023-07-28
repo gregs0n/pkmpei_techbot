@@ -37,7 +37,7 @@ async def process_show_all(message: Message):
         await message.answer(text=ticket,
                              reply_markup=kb)
 
-@admin_router.message(Command(commands='close_ticket'))
+@admin_router.message(Command(commands='update_ticket'))
 async def process_close_ticket(message: Message):
     try:
         idTicket: int = int(message.text.split()[1])
