@@ -14,6 +14,7 @@ class Config:
     PATH_DATABASE: str
     PATH_LOGS: str
     ADMINS: list[int]
+    MAX_TICKETS: int
 
 
 def load_config(path: str) -> Config:
@@ -24,6 +25,7 @@ def load_config(path: str) -> Config:
     RATE_LIMIT = float(read_config['settings']['rate_limit'].strip())
     PATH_DATABASE = 'data/database.db'
     PATH_LOGS = 'data/updates.log'
+    MAX_TICKETS = int(read_config['settings']['max_tickets'])
     
     admins = read_config['settings']['admin_id'].strip()
     admins = admins.replace(' ', '')
@@ -36,6 +38,7 @@ def load_config(path: str) -> Config:
         RATE_LIMIT=RATE_LIMIT,
         PATH_DATABASE=PATH_DATABASE,
         PATH_LOGS=PATH_LOGS,
+        MAX_TICKETS=MAX_TICKETS,
         ADMINS=admins
     )
     

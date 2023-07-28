@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS c_status(
 
 _c_status_init_query = """
 INSERT INTO c_status(statusName) VALUES
-    ("Получен"),
-    ("В работе"),
-    ("Завершен");
+    ("Получен🚚"),
+    ("В работе🛠"),
+    ("Завершен✅");
 """
 
 _c_category_query = """
@@ -42,11 +42,11 @@ CREATE TABLE IF NOT EXISTS c_category(
 
 _c_category_init_query = """
 INSERT INTO c_category(categoryName) VALUES
-    ("Запрос"),
-    ("Интернет"),
-    ("Принтер/сканер"),
-    ("Email-рассылка"),
-    ("Прочее");
+    ("Запрос📑"),
+    ("Интернет📶"),
+    ("Принтер/сканер🖨"),
+    ("Email-рассылка📧"),
+    ("Прочее💣");
 """
 
 _users_query = """

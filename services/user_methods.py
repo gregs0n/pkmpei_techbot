@@ -16,7 +16,7 @@ def AddTicket(iduser: int,
             "SELECT * FROM tickets WHERE idUser=? AND idStatus<3",
             (iduser,))
         tickets = cursor.fetchall()
-        if len(tickets) >= 3:
+        if len(tickets) > config.MAX_TICKETS:
             raise TicketLimitException(
                 "Превышено количество необработанных исходящих тикетов!"
                 )
