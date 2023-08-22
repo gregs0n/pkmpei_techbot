@@ -9,3 +9,6 @@ class TicketNotFoundException(BotException):
 
 class TicketClosedException(BotException):
     pass
+
+class InvalidTicketTextException(BotException):
+    pass

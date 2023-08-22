@@ -7,6 +7,10 @@ def AddTicket(iduser: int,
               userName: str,
               text: str,
               idCategory: int = 5) -> int:
+    if text.startswith("/"):
+        raise InvalidTicketTextException(
+            "Текст заявки не может начинаться с символа '/'!\nВведите текст заявки заново."
+        )
     ticket_id: int = 0
     config = load_config('settings.ini')
     with connect(config.PATH_DATABASE) as conn:

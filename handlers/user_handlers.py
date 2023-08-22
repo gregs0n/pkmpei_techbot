@@ -3,12 +3,12 @@ from aiogram.filters import Command, CommandStart, StateFilter, Text
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import default_state
 from aiogram.types import Message, CallbackQuery
-from lexicon.lexicon import LEXICON_RU
+from lexicon.lexicon import LEXICON_RU, ticket_type_keyboard, ticket_recommendations
 from states.states import FSMAddTicket, FSMUserStatus
 from services.user_methods import AddTicket, ListTickets
 from config.config import load_config
 from exceptions.exceptions import BotException
-from keyboards.keyboards import create_inline_kb, state_keyboard
+from keyboards.keyboards import create_inline_kb
 
 user_router: Router = Router()
 user_router.message.filter(~StateFilter(FSMUserStatus.admin))
@@ -30,24 +30,33 @@ async def process_admin(message: Message, state: FSMContext):
 async def process_help(message: Message):
     await message.answer(text=LEXICON_RU['user_help'])
 
-@user_router.message(Command(commands='cancel'), ~StateFilter(default_state))
-async def process_cancel(message: Message, state: FSMContext):
-    await message.answer(text=LEXICON_RU['/cancel'])
-    await state.clear()
-
 @user_router.message(Command(commands='add_ticket'), StateFilter(default_state))
 async def process_start_input(message: Message, state: FSMContext):
-    await message.answer(
+    sent_msg = await message.answer(
         text=LEXICON_RU['select_category'],
-        reply_markup=create_inline_kb(width=1, **state_keyboard)
+        reply_markup=create_inline_kb(width=1, **ticket_type_keyboard)
         )
     await state.set_state(FSMAddTicket.fill_type)
+    await state.update_data(sent_message=sent_msg)
+
+@user_router.callback_query(Text("cancel"))
+async def process_cancel(callback: CallbackQuery, state: FSMContext):
+    await callback.answer(text=LEXICON_RU['/cancel'])
+    state_data = await state.get_data()
+    await state_data['sent_message'].delete()
+    await state.clear()
 
 @user_router.callback_query(Text(endswith="_type"), StateFilter(FSMAddTicket.fill_type))
 async def process_ticket_type_select(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(
-        text=LEXICON_RU['/add_ticket'])
-    _id_category = list(state_keyboard.keys()).index(callback.data)+1
+        text=LEXICON_RU['/add_ticket'].format(
+            ticket_type_keyboard[callback.data],
+            ticket_recommendations[callback.data]),
+        reply_markup=create_inline_kb(
+            width=1,
+            cancel=ticket_type_keyboard["cancel"])
+        )
+    _id_category = list(ticket_type_keyboard.keys()).index(callback.data)+1
     await state.update_data(idCategory=_id_category)
     await state.set_state(FSMAddTicket.fill_ticket)
 
